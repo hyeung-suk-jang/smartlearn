@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body class="sb-nav-fixed">
+<nav th:replace="fragments/nav :: nav"></nav>
+<div th:replace="fragments/sidenav :: sidenav"></div> 
+
+
+        
+<div th:fragment="fragments/footer :: footer"></div>
+<th:block th:include="fragments/config :: config"></th:block>
+</body>
+</html>
