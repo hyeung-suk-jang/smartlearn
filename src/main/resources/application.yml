@@ -1,2 +1,17 @@
 server:
   port : 8090
+---
+spring:
+  datasource:
+    #    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/learn?useSSL=false&serverTimezone=Asia/Seoul
+    username: root
+    password: test
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body class="sb-nav-fixed">
+<nav th:replace="fragments/nav :: nav"></nav>
+<div th:replace="fragments/sidenav :: sidenav"></div>
+
+<div class="container">
+    <h1 class="mt-4">문제 생성</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">생성할 문제를 선택하세요.</li>
+    </ol>
+    <div class="border p-4">
+        <form id="form" th:action="@{/question/create}" method="POST">
+            <div class="form-row">
+                <div class="form-group col-md-7">
+                    <label for="validationDefault04">문제 종류 선택</label>
+                    <select class="form-control" id="category" name="category" required>
+                        <option selected disabled value="">선택</option>
+                        <option value="java">java</option>
+                        <option value="spring">spring</option>
+                        <option value="javascript">javascript</option>
+                        <option value="sql">sql</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-7 border-top pt-2">
+                    <label for="theNumberOfExample">문제 보기 수</label>
+                    <div id="theNumberOfExample">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="countExample" id="inlineRadio1" value="0">
+                            <label class="form-check-label" for="inlineRadio1">O/X</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="countExample" id="inlineRadio2" value="3">
+                            <label class="form-check-label" for="inlineRadio2">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="countExample" id="inlineRadio3" value="4">
+                            <label class="form-check-label" for="inlineRadio3">4</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-primary">문제 생성</button>
+            <div class="mt-3 border-top">
+                <div class="textareaDiv form-group"></div>
+                <div class="exampleDiv form-group"></div>
+                <div class="resultDiv"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function(){
+        $(".btn").on("click", function(){
+            var selectedVal = $("#category option:selected").val();
+            var theNumberOfExampleVal = $("input[name='countExample']:checked").val();
+
+            if(!selectedVal) {
+                alert("카테고리 체크");
+                return false;
+            }
+
+            if(!theNumberOfExampleVal) {
+                alert("보기수 체크");
+                return false;
+            }
+            
+            var str = "";
+            var strExample ="";
+            var strAnswer = "";
+
+            str += "<label for='question'>문제 (" + selectedVal + ")</label>"
+            str += "<textarea rows='5' id='question' name='question' class='form-control w-100'></textarea>";
+
+            strAnswer += "<label for='answer' class='d-block'>정답 번호</label>"
+            strAnswer += "<input type='text' id='answer' class='form-control col-md-3' name='answer'>";
+            strAnswer += "<button type='button' name='submitBtn' class='btn btn-primary mt-3'>완료</button>"
+
+            for (let i = 0; i < theNumberOfExampleVal; i++) {
+                strExample += "<label for='example"+ i +"'>보기 " + (i + 1) + "</label>";
+                strExample += "<input type='text' id='example"+ i +"' name='examples["+ i +"].example' class='form-control'>";
+            }
+
+            $(".textareaDiv").html(str);
+            $(".exampleDiv").html(strExample);
+            $(".resultDiv").html(strAnswer);
+        })
+
+        $(".resultDiv").on("click", "button[name='submitBtn']", function(e) {
+            console.log("clicked");
+            $("#form").submit();
+        });
+    });
+</script>
+
+<div th:fragment="fragments/footer :: footer"></div>
+<th:block th:include="fragments/config :: config"></th:block>
+
+</body>
+</html>
