@@ -22,3 +22,4 @@ public class Example {
     @JoinColumn(name = "question_id")
     private Question question;
 }
+

@@ -1,5 +1,6 @@
 package com.study.smartlearn.controller;
 
+import com.study.smartlearn.domain.Example;
 import com.study.smartlearn.domain.Question;
 import com.study.smartlearn.dto.QuestionDto;
 import com.study.smartlearn.service.QuestionService;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -24,16 +26,26 @@ public class QuestionController {
         return "/question/creation";
     }
 
-    @PostMapping("/create")
-    public String create(QuestionDto questionDto) {
-        questionService.saveQuestion(questionDto);
-        return "redirect:/";
-    }
-
     @GetMapping("/list")
     public String getList(Model model) {
         List<Question> questions = questionService.getList();
         model.addAttribute("list", questions);
         return "/question/list";
+    }
+
+    @GetMapping("/{id}")
+    public String getPage(@PathVariable Long id, Model model) {
+        Question question = questionService.getPage(id);
+        List<Example> examples = question.getExamples();
+
+        model.addAttribute("question", question);
+        model.addAttribute("examples", examples);
+        return "/question/view";
+    }
+
+    @PostMapping("/create")
+    public String create(QuestionDto questionDto) {
+        questionService.saveQuestion(questionDto);
+        return "redirect:/question/list";
     }
 }

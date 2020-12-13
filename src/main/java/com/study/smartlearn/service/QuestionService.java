@@ -23,13 +23,21 @@ public class QuestionService {
         questionRepository.save(question);
 
         List<Example> examples = questionDto.getExamples();
-        for (Example example : examples) {
-            example.setQuestion(question);
-            exampleRepository.save(example);
+        if (examples != null) {
+            for (Example example : examples) {
+                example.setQuestion(question);
+                exampleRepository.save(example);
+            }
         }
     }
 
     public List<Question> getList() {
-        return null;
+        return questionRepository.findAll();
+    }
+
+    public Question getPage(Long id) {
+        Question question = questionRepository.findById(id)
+                .orElseThrow(() -> new QuestionNotFoundException(id));
+        return question;
     }
 }
