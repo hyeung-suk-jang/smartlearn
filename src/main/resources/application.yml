@@ -1,13 +1,8 @@
-server:
-  port : 9581
-
----
-
 spring:
   datasource:
     #    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/learn?useSSL=false&serverTimezone=Asia/Seoul
-    username: root
+    url: jdbc:mysql://localhost:3306/smartlearn?useSSL=false&serverTimezone=Asia/Seoul
+    username: test
     password: test
 
   jpa:
