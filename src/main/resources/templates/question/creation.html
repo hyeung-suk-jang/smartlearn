@@ -27,7 +27,7 @@
                     <label for="theNumberOfExample">문제 보기 수</label>
                     <div id="theNumberOfExample">
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="countExample" id="inlineRadio1" value="0">
+                            <input class="form-check-input" type="radio" name="countExample" id="inlineRadio1" value="2">
                             <label class="form-check-label" for="inlineRadio1">O/X</label>
                         </div>
                         <div class="form-check form-check-inline">
@@ -41,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn btn-primary">문제 생성</button>
+            <button type="button" class="btn btn-primary createQuestionBtn">문제 생성</button>
             <div class="mt-3 border-top">
                 <div class="textareaDiv form-group"></div>
                 <div class="exampleDiv form-group"></div>
@@ -51,15 +51,16 @@
     </div>
 </div>
 
-
+<div th:fragment="fragments/footer :: footer"></div>
+<th:block th:include="fragments/config :: config"></th:block>
 
 <script>
     $(document).ready(function(){
-        $(".btn").on("click", function(){
-            var selectedVal = $("#category option:selected").val();
+        $(".createQuestionBtn").on("click", function(){
+            var categoryVal = $("#category option:selected").val();
             var theNumberOfExampleVal = $("input[name='countExample']:checked").val();
 
-            if(!selectedVal) {
+            if(!categoryVal) {
                 alert("카테고리 체크");
                 return false;
             }
@@ -73,17 +74,28 @@
             var strExample ="";
             var strAnswer = "";
 
-            str += "<label for='question'>문제 (" + selectedVal + ")</label>"
+            str += "<label for='title' class='mt-3'>문제 타이틀</label>";
+            str += "<input type='text' id='title' name='title' class='form-control'>";
+            str += "<label for='question' class='mt-3'>문제 (" + categoryVal + ")</label>";
             str += "<textarea rows='5' id='question' name='question' class='form-control w-100'></textarea>";
 
-            strAnswer += "<label for='answer' class='d-block'>정답 번호</label>"
-            strAnswer += "<input type='text' id='answer' class='form-control col-md-3' name='answer'>";
-            strAnswer += "<button type='button' name='submitBtn' class='btn btn-primary mt-3'>완료</button>"
+            strAnswer += "<label for='answer' class='d-block'>정답 번호</label>";
+            strAnswer += "<select class='form-control' id='answer' name='answer' required>";
+            strAnswer += "<option selected disabled value=''>선택</option>";    
 
-            for (let i = 0; i < theNumberOfExampleVal; i++) {
-                strExample += "<label for='example"+ i +"'>보기 " + (i + 1) + "</label>";
-                strExample += "<input type='text' id='example"+ i +"' name='examples["+ i +"].example' class='form-control'>";
+            if (theNumberOfExampleVal > 2) {
+                for (let i = 0; i < theNumberOfExampleVal; i++) {
+                    strAnswer += "<option value='" + (i + 1) + "'>" + (i + 1) + "</option>";
+
+                    strExample += "<label for='example"+ i +"'>보기 " + (i + 1) + "</label>";
+                    strExample += "<input type='text' id='example"+ i +"' name='examples["+ i +"].example' class='form-control'>";
+                }
+            } else {
+                strAnswer += "<option value='O'>O</option>";
+                strAnswer += "<option value='X'>X</option>";
             }
+            strAnswer += "</select>";
+            strAnswer += "<button type='button' name='submitBtn' class='btn btn-primary mt-3'>완료</button>";
 
             $(".textareaDiv").html(str);
             $(".exampleDiv").html(strExample);
@@ -97,8 +109,7 @@
     });
 </script>
 
-<div th:fragment="fragments/footer :: footer"></div>
-<th:block th:include="fragments/config :: config"></th:block>
+
 
 </body>
 </html>

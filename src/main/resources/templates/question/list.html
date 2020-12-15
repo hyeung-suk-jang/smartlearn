@@ -12,6 +12,7 @@
                 <thead>
                     <tr>
                         <th>번호</th>
+                        <th>타이틀</th>
                         <th>카테고리</th>
                         <th>보기수</th>
                         <th>생성일</th>
@@ -19,8 +20,9 @@
                 </thead>
                 <tbody>
                     <tr th:each="list : ${list}">
-                        <td th:text="${list.id}">
-                            <a th:href="@{/question/{id} (id=${list.id)}"></a>
+                        <td th:text="${list.id}"></td>
+                        <td>
+                            <a th:href="@{/question/{id} (id=${list.id})}">[[${list.title}]]</a>
                         </td>
                         <td th:text="${list.category}"></td>
                         <td th:text="${list.countExample}"></td>

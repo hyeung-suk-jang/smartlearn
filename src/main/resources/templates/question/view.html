@@ -10,20 +10,38 @@
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active">문제 확인.</li>
     </ol>
-    <div>
+    <div class="mb-5">
+        <div class="form-group">
+            <label for="title">문제 타이틀</label>
+            <input type="text" name="title" id="title" class="form-control" th:value="${question.title}" readonly>
+        </div>
         <div class="form-group">
             <label for='question'>문제</label>
             <textarea rows='5' id='question' name='question' class='form-control w-100' readonly>[[${question.question}]]</textarea>
         </div>
-        <div th:each="example : ${examples}" class="form-group">
-            <label th:attr='for=example + ${example.id}'>보기 [[${example.id}]]</label>
+        <div th:each="example, i : ${examples}" class="form-group">
+            <label th:attr='for=example + ${example.id}' th:text="보기 + ${i.index + 1}"></label>
             <input type='text' th:attr='id=example + ${example.id}, name=examples[+ ${example.id} +].example' class='form-control' th:value="${example.example}" readonly>
         </div>
-        <div>
-
+        <div class="form-group">
+            <label for="answer">정답</label>
+            <input type="text" name="answer" id="answer" class="form-control" th:value="${question.answer}" readonly>
         </div>
+        <button type="button" class="btn btn-primary" id="modify">수정</button>
+        <button type="button" class="btn btn-primary" id="list">list로 이동</button>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $("#modify").click(function(){
+            location.href = "/question/[[${question.id}]]/modify";
+        });
+
+        $("#list").click(function(){
+            location.href = "/question/";
+        });
+    });
+</script>
 
 <div th:fragment="fragments/footer :: footer"></div>
 <th:block th:include="fragments/config :: config"></th:block>

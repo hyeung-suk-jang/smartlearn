@@ -43,9 +43,25 @@ public class QuestionController {
         return "/question/view";
     }
 
+    @GetMapping("/{id}/modify")
+    public String getModifyPage(@PathVariable("id") Long id, Model model) {
+        Question question = questionService.getPage(id);
+        List<Example> examples = question.getExamples();
+
+        model.addAttribute("question", question);
+        model.addAttribute("examples", examples);
+        return "/question/modify";
+    }
+
     @PostMapping("/create")
     public String create(QuestionDto questionDto) {
         questionService.saveQuestion(questionDto);
+        return "redirect:/question/list";
+    }
+
+    @PostMapping("/{id}/modify")
+    public String modify(@PathVariable("id") Long id, QuestionDto questionDto) {
+        questionService.modifyQuestion(id, questionDto);
         return "redirect:/question/list";
     }
 }

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body class="sb-nav-fixed">
+<nav th:replace="fragments/nav :: nav"></nav>
+<div th:replace="fragments/sidenav :: sidenav"></div>
+
+<div class="container">
+    <h1 class="mt-4">문제</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">문제 확인.</li>
+    </ol>
+    <form th:action="@{/question/{id}/modify (id=${question.id})}" method="post" id="form">
+        <div class="mb-5">
+            <div class="form-group">
+                <label for="title">문제 타이틀</label>
+                <input type="text" name="title" id="title" class="form-control" th:value="${question.title}">
+            </div>
+            <div class="form-group">
+                <label for='question'>문제</label>
+                <textarea rows='5' id='question' name='question' class='form-control w-100'>[[${question.question}]]</textarea>
+            </div>
+            <div th:each="example, i : ${examples}" class="form-group">
+                <label th:attr='for=example + ${i.index}' th:text="보기 + ${i.index + 1}"></label>
+                <input type='text' th:attr='id=example + ${i.index}, name=examples[+ ${i.index} +].example' class='form-control' th:value="${example.example}">
+            </div>
+            <div th:if="${question.countExample.equals('2')}" class="form-group">
+                <label for="answer">정답</label>
+                <select class="form-control" id="answer" name="answer" required>
+                    <option selected disabled value="">선택</option>
+                    <option value="O">O</option>
+                    <option value="X">X</option>
+                </select>
+            </div>
+            <div th:if="${question.countExample.equals('3')}" class="form-group">
+                <label for="answer">정답</label>
+                <select class="form-control" id="answer" name="answer" required>
+                    <option selected disabled value="">선택</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+            </div>
+            <div th:if="${question.countExample.equals('4')}" class="form-group">
+                <label for="answer">정답</label>
+                <select class="form-control" id="answer" name="answer" required>
+                    <option selected disabled value="">선택</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+            <button type="button" class="btn btn-warning" id="reRegisterBtn">수정 완료</button>
+            <button type="button" class="btn btn-primary" id="list">list로 이동</button>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function(){
+        $("#reRegisterBtn").click(function(){
+            var answerVal = $("#answer option:selected").val();
+
+            if(!answerVal) {
+                alert("정답을 선택해주세요.");
+                return false;
+            }
+            
+            $("#form").submit();
+        });
+
+        $("#list").click(function(){
+            location.href = "/question/list";
+        });
+    });
+</script>
+
+<div th:fragment="fragments/footer :: footer"></div>
+<th:block th:include="fragments/config :: config"></th:block>
+</body>
+</html>
